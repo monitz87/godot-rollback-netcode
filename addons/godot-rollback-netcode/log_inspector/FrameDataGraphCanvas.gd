@@ -122,7 +122,7 @@ func _draw_peer(peer_id: int, peer_rect: Rect2, draw_data: Dictionary) -> void:
 			Vector2(extended_peer_rect.position.x + frame.start_time - absolute_start_time, extended_peer_rect.position.y),
 			Vector2(frame.end_time - frame.start_time, extended_peer_rect.size.y))
 		if frame_rect.intersects(extended_peer_rect):
-			frame_rect = frame_rect.clip(extended_peer_rect)
+			frame_rect = frame_rect.intersection(extended_peer_rect)
 			if frame_rect.size.x == 0:
 				frame_rect.size.x = 1
 			
@@ -149,7 +149,7 @@ func _draw_peer(peer_id: int, peer_rect: Rect2, draw_data: Dictionary) -> void:
 						Logger.SkipReason.ADVANTAGE_ADJUSTMENT:
 							tick_letter = 'A'
 					if tick_letter != '':
-						tick_numbers_to_draw.append([_font, center_position - Vector2(5, 0), tick_letter, Color('f04dff'), _font_big_size])
+						tick_numbers_to_draw.append([_font, center_position - Vector2(5, 0), tick_letter, _font_big_size, Color('f04dff')])
 			else:
 				frame_color = FRAME_TYPE_COLOR[frame.type]
 			
@@ -157,7 +157,7 @@ func _draw_peer(peer_id: int, peer_rect: Rect2, draw_data: Dictionary) -> void:
 			
 			if frame.type == Logger.FrameType.TICK and frame.data.has('tick') and not skipped:
 				var tick: int = frame.data['tick']
-				tick_numbers_to_draw.append([_font, center_position - Vector2(3, 0), str(tick), Color(1.0, 1.0, 1.0), _font_size])
+				tick_numbers_to_draw.append([_font, center_position - Vector2(3, 0), str(tick), _font_size, Color(1.0, 1.0, 1.0)])
 				if frame.data.has('input_tick') and capture_network_arrow_positions:
 					var input_tick: int = frame.data['input_tick']
 					network_arrow_start_positions[input_tick] = center_position
@@ -182,7 +182,7 @@ func _draw_peer(peer_id: int, peer_rect: Rect2, draw_data: Dictionary) -> void:
 			break
 	
 	for tick_number_to_draw in tick_numbers_to_draw:
-		draw_string(tick_number_to_draw[0], tick_number_to_draw[1], tick_number_to_draw[2], tick_number_to_draw[3])
+		draw_string(tick_number_to_draw[0], tick_number_to_draw[1], tick_number_to_draw[2], HORIZONTAL_ALIGNMENT_LEFT, -1, tick_number_to_draw[3])
 	
 	if capture_network_arrow_positions:
 		if not draw_data.has("network_arrow_positions"):

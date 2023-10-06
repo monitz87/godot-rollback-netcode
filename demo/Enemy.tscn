@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqn8xsg3x27dh"]
+
+[ext_resource type="Script" path="res://demo/Enemy.gd" id="1_3dr0j"]
+[ext_resource type="Texture2D" uid="uid://c6f2jqtkh4h2r" path="res://icon.png" id="2_rbu3f"]
+[ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkTimer.gd" id="3_exose"]
+
+[node name="Enemy" type="StaticBody2D" groups=["network_sync"]]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_3dr0j")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_rbu3f")
+
+[node name="NetworkTimer" type="Node" parent="."]
+script = ExtResource("3_exose")
+autostart = true
+wait_ticks = 60
+
+[connection signal="timeout" from="NetworkTimer" to="." method="_on_network_timer_timeout"]

@@ -3,6 +3,7 @@ extends Node
 const Logger = preload("res://addons/godot-rollback-netcode/Logger.gd")
 const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
 const Utils = preload("res://addons/godot-rollback-netcode/Utils.gd")
+const Main = preload("res://demo/Main.tscn")
 
 const GAME_PORT_SETTING = 'network/rollback/log_inspector/replay_port'
 const MATCH_SCENE_PATH_SETTING = 'network/rollback/log_inspector/replay_match_scene_path'
@@ -53,16 +54,17 @@ func connect_to_replay_server() -> bool:
 	return connection.connect_to_host('127.0.0.1', port) == OK
 
 func is_connected_to_replay_server() -> bool:
-	return connection and connection.is_connected_to_host()
+	return connection and connection.get_status() == StreamPeerTCP.STATUS_CONNECTED
 
 func poll() -> void:
 	if not active:
 		return
 	if connection:
+		connection.poll()
 		var status = connection.get_status()
 		if status == StreamPeerTCP.STATUS_CONNECTED:
 			while not _setting_up_match and connection.get_available_bytes() >= 4:
-				var data = connection.get_var()
+				var data = connection.get_var()				
 				if data is Dictionary:
 					process_message(data)
 		elif status == StreamPeerTCP.STATUS_NONE:
@@ -112,12 +114,13 @@ func _do_setup_match1(my_peer_id: int, peer_ids: Array, match_info: Dictionary) 
 		return
 	
 	_setting_up_match = true
+	await get_tree().process_frame
 	call_deferred("_do_setup_match2", my_peer_id, peer_ids, match_info)
 
 func _do_setup_match2(my_peer_id: int, peer_ids: Array, match_info: Dictionary) -> void:
 	_setting_up_match = false
-	
-	var match_scene = get_tree().current_scene
+
+	var match_scene = get_tree().current_scene	
 	if not Utils.has_interop_method(match_scene, match_scene_method):
 		_show_error_and_quit("Match scene has no such method: %s" % match_scene_method)
 		return

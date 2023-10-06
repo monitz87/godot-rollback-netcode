@@ -1,14 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5wcepvlr1vp5"]
+[gd_scene load_steps=7 format=3 uid="uid://c5wcepvlr1vp5"]
 
 [ext_resource type="Script" path="res://demo/Main.gd" id="1"]
-[ext_resource type="PackedScene" path="res://demo/Player.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://b7qv3c5jh560d" path="res://demo/Player.tscn" id="2"]
 [ext_resource type="FontFile" uid="uid://cfekr0bgg28tq" path="res://assets/monogram_extended.ttf" id="3"]
+[ext_resource type="PackedScene" uid="uid://cqn8xsg3x27dh" path="res://demo/Enemy.tscn" id="4_epmw7"]
 
 [sub_resource type="FontFile" id="1"]
 fallbacks = Array[Font]([ExtResource("3")])
-face_index = null
-embolden = null
-transform = null
 cache/0/16/0/ascent = 0.0
 cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0
@@ -18,9 +16,6 @@ cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
 [sub_resource type="FontFile" id="2"]
 fallbacks = Array[Font]([ExtResource("3")])
-face_index = null
-embolden = null
-transform = null
 cache/0/16/0/ascent = 0.0
 cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0
@@ -123,11 +118,35 @@ offset_left = -48.0
 offset_top = -20.0
 text = "RESET"
 
+[node name="Scoreboard" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 33.0
+offset_top = 32.0
+offset_right = 221.0
+offset_bottom = 190.0
+
+[node name="Player1Score" type="Label" parent="CanvasLayer/Scoreboard"]
+layout_mode = 2
+text = "Player 1 Score: 0"
+
+[node name="Player2Score" type="Label" parent="CanvasLayer/Scoreboard"]
+layout_mode = 2
+text = "Player 2 Score: 0"
+
 [node name="ServerPlayer" parent="." instance=ExtResource("2")]
-position = Vector2(230, 367)
+fixed_position_x = 16449536
+fixed_position_y = 23789568
+position = Vector2(251, 363)
 
 [node name="ClientPlayer" parent="." instance=ExtResource("2")]
-position = Vector2(771, 364)
+fixed_position_x = 51052544
+fixed_position_y = 24051712
+position = Vector2(779, 367)
+
+[node name="Enemy1" parent="." instance=ExtResource("4_epmw7")]
+position = Vector2(244, 577)
+
+[node name="Enemy2" parent="." instance=ExtResource("4_epmw7")]
+position = Vector2(779, 147)
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/LocalButton" to="." method="_on_LocalButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/OnlineButton" to="." method="_on_OnlineButton_pressed"]

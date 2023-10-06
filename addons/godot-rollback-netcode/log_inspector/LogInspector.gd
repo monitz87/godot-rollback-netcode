@@ -71,7 +71,7 @@ func _on_ClearButton_pressed() -> void:
 func _on_AddLogButton_pressed() -> void:
 	file_dialog.current_file = ''
 	file_dialog.current_path = ''
-	file_dialog.show_modal()
+	file_dialog.popup()
 	file_dialog.invalidate()
 
 func _on_FileDialog_files_selected(paths: PackedStringArray) -> void:

@@ -89,7 +89,7 @@ func is_game_started() -> bool:
 	return game_pid > 0
 
 func is_connected_to_game() -> bool:
-	return connection and connection.is_connected_to_host()
+	return connection and connection.get_status() == StreamPeerTCP.STATUS_CONNECTED
 
 func get_status() -> int:
 	if is_connected_to_game():

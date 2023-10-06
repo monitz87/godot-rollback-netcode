@@ -9,6 +9,10 @@ const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNe
 @onready var message_label = $CanvasLayer/MessageLabel
 @onready var sync_lost_label = $CanvasLayer/SyncLostLabel
 @onready var reset_button = $CanvasLayer/ResetButton
+@onready var player_1_score = $CanvasLayer/Scoreboard/Player1Score
+@onready var player_2_score = $CanvasLayer/Scoreboard/Player2Score
+@onready var player_1 = $ServerPlayer
+@onready var player_2 = $ClientPlayer
 
 const LOG_FILE_DIRECTORY = 'user://detailed_logs'
 
@@ -35,6 +39,10 @@ func _ready() -> void:
 		connection_panel.visible = false
 		reset_button.visible = false
 
+func _process(_delta: float) -> void:
+	player_1_score.text = "Player 1 Score: %s" % str(player_1.score)
+	player_2_score.text = "Player 2 Score: %s" % str(player_2.score)
+
 func _on_OnlineButton_pressed() -> void:
 	connection_panel.popup_centered()
 	SyncManager.reset_network_adaptor()
@@ -60,7 +68,7 @@ func _on_ClientButton_pressed() -> void:
 	main_menu.visible = false
 	message_label.text = "Connecting..."
 
-func _on_network_peer_connected(peer_id: int):
+func _on_network_peer_connected(peer_id: int):	
 	$ServerPlayer.set_multiplayer_authority(1)
 	if multiplayer.is_server():
 		$ClientPlayer.set_multiplayer_authority(peer_id)
@@ -114,9 +122,9 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 	message_label.text = "Fatal sync error: " + msg
 	sync_lost_label.visible = false
 	
-	var peer = multiplayer.network_peer
+	var peer = multiplayer.multiplayer_peer
 	if peer:
-		peer.close_connection()
+		peer.close()
 	SyncManager.clear_peers()
 
 func _on_ResetButton_pressed() -> void:
@@ -124,7 +132,7 @@ func _on_ResetButton_pressed() -> void:
 	SyncManager.clear_peers()
 	var peer = multiplayer.multiplayer_peer
 	if peer:
-		peer.close_connection()
+		peer.close()
 	get_tree().reload_current_scene()
 
 func setup_match_for_replay(my_peer_id: int, peer_ids: Array, _match_info: Dictionary) -> void:
@@ -134,4 +142,4 @@ func setup_match_for_replay(my_peer_id: int, peer_ids: Array, _match_info: Dicti
 	else:
 		client_peer_id = my_peer_id
 	$ClientPlayer.set_multiplayer_authority(client_peer_id)
-
+	

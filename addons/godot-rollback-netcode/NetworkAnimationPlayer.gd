@@ -4,8 +4,8 @@ class_name NetworkAnimationPlayer
 @export var auto_reset : bool = true
 
 func _ready() -> void:
-	method_call_mode = AnimationPlayer.ANIMATION_METHOD_CALL_IMMEDIATE
-	playback_process_mode = AnimationPlayer.ANIMATION_PROCESS_MANUAL
+	set_method_call_mode(AnimationPlayer.ANIMATION_METHOD_CALL_IMMEDIATE)
+	set_process_callback(AnimationPlayer.ANIMATION_PROCESS_MANUAL)
 	add_to_group('network_sync')
 
 func _network_process(input: Dictionary) -> void:

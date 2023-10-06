@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://ccunslq4v6df7"]
 
 [ext_resource type="Script" path="res://addons/godot-rollback-netcode/log_inspector/FrameViewer.gd" id="1"]
-[ext_resource type="PackedScene" path="res://addons/godot-rollback-netcode/log_inspector/FrameDataGraph.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://d1320idoph77t" path="res://addons/godot-rollback-netcode/log_inspector/FrameDataGraph.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://b61xuuo1le26m" path="res://addons/godot-rollback-netcode/log_inspector/FrameViewerSettingsDialog.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://addons/godot-rollback-netcode/log_inspector/FrameDataGrid.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://xpcs2wngnu82" path="res://addons/godot-rollback-netcode/log_inspector/FrameDataGrid.tscn" id="4"]
 
 [node name="FrameViewer" type="Control"]
 layout_mode = 3
