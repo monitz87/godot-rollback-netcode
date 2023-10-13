@@ -133,13 +133,9 @@ layout_mode = 2
 text = "Player 2 Score: 0"
 
 [node name="ServerPlayer" parent="." instance=ExtResource("2")]
-fixed_position_x = 16449536
-fixed_position_y = 23789568
 position = Vector2(251, 363)
 
 [node name="ClientPlayer" parent="." instance=ExtResource("2")]
-fixed_position_x = 51052544
-fixed_position_y = 24051712
 position = Vector2(779, 367)
 
 [node name="Enemy1" parent="." instance=ExtResource("4_epmw7")]

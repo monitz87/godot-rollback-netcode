@@ -2,6 +2,7 @@
 /.import/
 *.swp
 
-# VSCode Settings 
+# VSCode Settings
 .vscode/
 .godot/
+.DS_Store

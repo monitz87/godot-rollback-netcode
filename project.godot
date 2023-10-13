@@ -89,13 +89,13 @@ sync_debug={
 
 [network]
 
-rollback/interpolation=true
+rollback/input_delay=0
 rollback/log_inspector/replay_match_scene_path="res://demo/Main.tscn"
 
 [physics]
 
 common/enable_pause_aware_picking=true
-common/physics_fps=30
+common/physics_fps=60
 
 [rendering]
 

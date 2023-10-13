@@ -1,8 +1,8 @@
-extends SGFixedNode2D
+extends Node2D
 
 @export var input_prefix: String = "player1_"
 
-@onready var area = $SGArea2D
+@onready var area = $Area2D
 
 enum PlayerInputKey {
 	INPUT_VECTOR,
@@ -10,9 +10,6 @@ enum PlayerInputKey {
 
 var score := 0
 var multiplier := 1
-
-func _ready():
-	area.sync_to_physics_engine()
 
 func _save_state() -> Dictionary:
 	return {
@@ -23,15 +20,13 @@ func _save_state() -> Dictionary:
 
 
 func _load_state(state: Dictionary) -> void:
-	fixed_position = SGFixed.from_float_vector2(state['position'])
+	position = state['position']
 	score = state['score']
 	multiplier = state['multiplier']
-	area.sync_to_physics_engine()
 
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
-	fixed_position.x = lerp(SGFixed.from_float_vector2(old_state['position']).x, SGFixed.from_float_vector2(new_state['position']).x, weight)
-	fixed_position.y = lerp(SGFixed.from_float_vector2(old_state['position']).y, SGFixed.from_float_vector2(new_state['position']).y, weight)
+	position = lerp(old_state['position'], new_state['position'], weight)
 
 
 func _get_local_input() -> Dictionary:
@@ -54,8 +49,7 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 
 
 func _network_process(input: Dictionary) -> void:
-	fixed_position = SGFixed.from_float_vector2(position + input.get(PlayerInputKey.INPUT_VECTOR, Vector2.ZERO) * 16)
-	area.sync_to_physics_engine()
+	position += input.get(PlayerInputKey.INPUT_VECTOR, Vector2.ZERO) * 16
 
 
 func _network_postprocess(_input: Dictionary) -> void:
